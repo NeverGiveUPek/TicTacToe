@@ -1,18 +1,31 @@
+package game.settings;
+
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
+
 public class Menu {
 
-    private Settings settings;
+    private Settings settings = new Settings();
     private byte play_state = 0; //before first game or after {0;1}
+    private boolean changed_settings;
 
-    public Menu(Settings settings,byte play_state){
-        this.settings = settings;
+    public Menu(byte play_state){
         this.play_state = play_state;
     }
 
     public byte get_play_state() {
         return play_state;
+    }
+
+    public void set_play_state(byte play_state){
+        this.play_state = play_state;
+    }
+    public void set_settings(Settings settings){
+        this.settings = settings;
+    }
+    public Settings get_settings(){
+        return settings;
     }
 
     private void print_menu(){

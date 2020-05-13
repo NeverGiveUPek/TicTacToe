@@ -1,9 +1,11 @@
+package game.play.GameBoard;
+
 public class Map {
     private int size;
     private int winning_length;
     private char[][] board;
 
-    Map(int size, int winning_length){
+    public Map(int size, int winning_length){
         this.size = size;
         this.winning_length = winning_length;
         board = new char[size][size];

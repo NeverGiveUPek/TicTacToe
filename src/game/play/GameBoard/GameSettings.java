@@ -1,3 +1,5 @@
+package game.play.GameBoard;
+
 import java.util.Scanner;
 import java.util.InputMismatchException;
 

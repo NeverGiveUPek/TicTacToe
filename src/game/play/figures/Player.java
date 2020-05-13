@@ -1,9 +1,25 @@
-import java.util.InputMismatchException;
-
+package game.play.figures;
+import game.play.GameBoard.Map;
 
 public abstract class Player {
-    char icon = 'P';
-    int x = -1, y = -1;
+    protected char icon = 'P';
+    protected int x = -1, y = -1;
+
+    public int get_x() {
+        return x;
+    }
+
+    public void set_x(int x) {
+        this.x = x;
+    }
+
+    public int get_y() {
+        return y;
+    }
+
+    public void set_y(int y) {
+        this.y = y;
+    }
 
     public void set_icon(char icon) {
         this.icon = icon;

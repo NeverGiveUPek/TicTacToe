@@ -1,3 +1,6 @@
+package game.play.figures;
+
+import game.play.GameBoard.Map;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 

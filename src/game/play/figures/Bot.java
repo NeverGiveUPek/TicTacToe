@@ -1,3 +1,6 @@
+package game.play.figures;
+import game.play.GameBoard.Map;
+
 import java.util.LinkedList;
 import java.util.Random;
 import java.util.List;
