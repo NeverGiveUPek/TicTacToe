@@ -1,20 +1,20 @@
 package game.play.GameBoard;
 
-public class Map {
+public class GameMap {
     private int size;
-    private int winning_length;
+    private int winningLength;
     private char[][] board;
 
-    public Map(int size, int winning_length){
+    public GameMap(int size, int winningLength){
         this.size = size;
-        this.winning_length = winning_length;
+        this.winningLength = winningLength;
         board = new char[size][size];
     }
 
 
-    public void print_map() {
+    public void printMap() {
         {
-            System.out.println("WINNING LENGTH: " + winning_length);
+            System.out.println("WINNING LENGTH: " + winningLength);
 
             //drawing first row
             for(int j=0; j<size-1;j++){
@@ -53,17 +53,19 @@ public class Map {
             }
         }
     }
-    public boolean check_cell_empty(int x,int y){
+    public boolean checkCellEmpty(int x, int y){
         if(board[y][x]=='X') return false;
         else if(board[y][x]=='o')return false;
         return true;
     }
-    public int get_map_size(){return size;}
-    public void set_cell_icon(int x, int y, char icon) {
+    public boolean checkCords(int x, int y){
+        return x >= 0 && x < size && y >= 0 && y < size;
+    }
+    public int getMapSize(){return size;}
+    public void setCellIcon(int x, int y, char icon) {
         board[y][x] = icon;
     }
-    public char get_cell_icon(int x, int y) { return board[y][x]; }
-    public boolean check_map_full(){
+    public boolean checkMapFull(){
         for(int i=0;i<size;i++){
             for(int j=0;j<size;j++){
                 if(board[i][j]!='X'&&board[i][j]!='o') return false;
@@ -71,60 +73,60 @@ public class Map {
         }
         return true;
     }
-    public boolean check_horizontal(int x,int y, char given_icon){
-        for(int i=0;i<winning_length;i++)
+    public boolean checkHorizontal(int x, int y, char givenIcon){
+        for(int i = 0; i< winningLength; i++)
         {
-            if(board[y][x+i]!=given_icon) return false;
+            if(board[y][x+i]!=givenIcon) return false;
         }
         return true;
     }
-    public boolean check_vertical(int x, int y, char given_icon){
-        for(int i=0;i<winning_length;i++)
+    public boolean checkVertical(int x, int y, char givenIcon){
+        for(int i = 0; i< winningLength; i++)
         {
-            if(board[y+i][x]!=given_icon) return false;
+            if(board[y+i][x]!=givenIcon) return false;
         }
         return true;
     }
-    public boolean check_diagonally_right(int x, int y, char given_icon){
-        for(int i=0;i<winning_length;i++)
+    public boolean checkDiagonallyRight(int x, int y, char givenIcon){
+        for(int i = 0; i< winningLength; i++)
         {
-            if(board[y+i][x+i]!=given_icon) return false;
+            if(board[y+i][x+i]!=givenIcon) return false;
         }
         return true;
     }
-    public boolean check_diagonally_left(int x, int y, char given_icon){
-        for(int i=0;i<winning_length;i++)
+    public boolean checkDiagonallyLeft(int x, int y, char givenIcon){
+        for(int i = 0; i< winningLength; i++)
         {
-            if(board[y+i][x-i]!=given_icon) return false;
+            if(board[y+i][x-i]!=givenIcon) return false;
         }
         return true;
     }
 
-    public boolean check_win(char icon){
+    public boolean checkWin(char icon){
         boolean flag = false;
 
         for(int i=0;i<size;i++) {
             for(int j=0;j<size;j++){
-                if(j<=size-winning_length) {
-                    if(check_horizontal(j,i,icon)) flag = true;
+                if(j<=size- winningLength) {
+                    if(checkHorizontal(j,i,icon)) flag = true;
                 }
-                if(i<=size-winning_length) {
-                    if(check_vertical(j,i,icon)) flag = true;
+                if(i<=size- winningLength) {
+                    if(checkVertical(j,i,icon)) flag = true;
                 }
-                if(j<=size-winning_length && i<=size-winning_length) {
-                    if(check_diagonally_right(j,i,icon)) flag = true;
+                if(j<=size- winningLength && i<=size- winningLength) {
+                    if(checkDiagonallyRight(j,i,icon)) flag = true;
                 }
-                if(j>=winning_length-1 && i<=size-winning_length) {
-                    if(check_diagonally_left(j,i,icon)) flag = true;
+                if(j>= winningLength -1 && i<=size- winningLength) {
+                    if(checkDiagonallyLeft(j,i,icon)) flag = true;
                 }
             }
         }
         return flag;
     }
-    public byte check_game_condtion(){
-        if(check_win('X')) return 10;//X won
-        if(check_win('o')) return -10;//o won
-        if(check_map_full()) return 0; //tie
+    public byte checkGameCondtion(){
+        if(checkWin('X')) return 10;//X won
+        if(checkWin('o')) return -10;//o won
+        if(checkMapFull()) return 0; //tie
         return 2; //still playing
     }
 

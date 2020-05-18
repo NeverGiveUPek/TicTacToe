@@ -5,30 +5,29 @@ import java.util.Scanner;
 
 
 public class Menu {
+    private Scanner input;
+    private Settings settings = new Settings(input);
+    private byte playState = 0; //before first game or after {0;1}
 
-    private Settings settings = new Settings();
-    private byte play_state = 0; //before first game or after {0;1}
-    private boolean changed_settings;
 
-    public Menu(byte play_state){
-        this.play_state = play_state;
+
+    public Menu(byte playState, Scanner input){
+        this.input = input;
+        this.playState = playState;
     }
 
-    public byte get_play_state() {
-        return play_state;
+    public byte getPlayState() {
+        return playState;
     }
 
-    public void set_play_state(byte play_state){
-        this.play_state = play_state;
-    }
-    public void set_settings(Settings settings){
-        this.settings = settings;
+    public void setPlayState(byte play_state){
+        this.playState = play_state;
     }
     public Settings get_settings(){
         return settings;
     }
 
-    private void print_menu(){
+    private void printMenu(){
 
         System.out.println("---MENU---");
         System.out.println("1. New Game");
@@ -36,7 +35,7 @@ public class Menu {
         System.out.println("3. Scoreboard");//not working yet
         System.out.println("4. Exit");
     }
-    private void print_end_menu(){  //after game lose
+    private void printEndMenu(){  //after game lose
         System.out.println("---MENU---");
         System.out.println("1. Play Again");
         System.out.println("2. New Game");
@@ -45,15 +44,15 @@ public class Menu {
         System.out.println("5. Exit");
 
     }
-    public void run_menu(){
-        if(play_state == 0) {
-            print_menu();
+    public void runMenu(){
+        if(playState == 0) {
+            printMenu();
         }
         else{
-            print_end_menu();
+            printEndMenu();
         }
         boolean flag=true;
-        boolean exception_flag=false;
+        boolean exceptionFlag=false;
         int value;
 
 
@@ -61,36 +60,36 @@ public class Menu {
         do {
             do {
                 try {
-                    Scanner input = new Scanner(System.in);
-                    value = input.nextInt() - play_state;
-                    exception_flag = true;
+                    value = input.nextInt() - playState;
+                    exceptionFlag = true;
                 }catch(InputMismatchException e){
                     value = -1;
                 }
-                if (value < (1 - play_state)|| value > 4 || !exception_flag) {
+                if (value < (1 - playState)|| value > 4 || !exceptionFlag) {
                     System.out.println("You wrote wrong input. Do it again: ");
                 }
-            } while (value < (1 - play_state) || value > 4);
+            } while (value < (1 - playState) || value > 4);
             if(value == 2) {  //enters game settings
-                settings.change_settings();
+                settings.changeSettings();
             }
             else if(value == 3){ //enters scoarboard
                 System.out.println("SCOREBOARD");
             }
             else if(value == 4){
+                input.close();//close Scanner object
                 System.exit(1);
             }
 
-            if(play_state == 0){
+            if(playState == 0){
                 if(value == 1) flag = false;
-                else print_menu();
+                else printMenu();
             }
-            else if(play_state == 1){
+            else if(playState == 1){
                 if(value == 0 || value == 1) {
                     flag = false;
-                    if(value == 1) play_state = 0; //changing play_state to execute right set_game function
+                    if(value == 1) playState = 0; //changing play_state to execute right set_game function
                 }
-                else print_end_menu();
+                else printEndMenu();
             }
 
         }while(flag);//player must select game or exit
