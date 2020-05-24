@@ -1,14 +1,16 @@
 package game.play.gameSettings;
 
-import java.util.Scanner;
+import game.play.figures.BotLevel;
+import game.play.Icon.Icon;
 import java.util.InputMismatchException;
+import java.util.Scanner;
 
 public class GameSettings {
     private int numberGameMode;
-    private int numberStartingIcon;
     private int player1Icon; //1. X   2. o
     private int boardSize;
-    private int botLvl =0;
+    private Icon startingIcon;
+    private BotLevel botLvl;
     private Scanner input;
 
     public GameSettings(Scanner input){
@@ -24,10 +26,10 @@ public class GameSettings {
     public int getNumberGameMode(){
         return numberGameMode;
     }
-    public int getNumberStartingIcon(){
-        return numberStartingIcon;
+    public Icon getStartingIcon(){
+        return startingIcon;
     }
-    public int getBotLvl(){return botLvl;}
+    public BotLevel getBotLvl(){return botLvl;}
 
     private void printGameMode(){
         System.out.println("Set your game mode");
@@ -68,6 +70,7 @@ public class GameSettings {
                 exceptionFlag = true;
             }catch(InputMismatchException e){
                 System.out.println("Wrog input!");
+                input.nextLine();
             }
             if(exceptionFlag && value >= min && value <= max) flag = true;
             if(value < min || value > max){
@@ -90,10 +93,19 @@ public class GameSettings {
         }
         if(numberGameMode == 2){
             printBotLvl();
-            botLvl = getValue(1,3);
+            int numberOfBot = getValue(1,3);
+            if(numberOfBot == 1) botLvl = BotLevel.GOD;
+            else if(numberOfBot == 2) botLvl = BotLevel.AVERAGE;
+            else botLvl = BotLevel.POOR;
         }
         printStartingIcon();
-        numberStartingIcon = getValue(1,2);
+        int numberStartingIcon = getValue(1,2);
+        if(numberStartingIcon == 1) {
+            startingIcon = new Icon('X');
+        }
+        else{
+            startingIcon = new Icon('o');
+        }
         printPlayer1Icon();
         player1Icon = getValue(1,2);
     }

@@ -63,6 +63,7 @@ public class Menu {
                     value = input.nextInt() - playState;
                     exceptionFlag = true;
                 }catch(InputMismatchException e){
+                    input.nextLine();
                     value = -1;
                 }
                 if (value < (1 - playState)|| value > 4 || !exceptionFlag) {

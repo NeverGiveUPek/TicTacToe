@@ -1,8 +1,10 @@
 package game.play.figures;
 import game.play.GameBoard.GameMap;
+import game.play.Icon.Icon;
 
 public abstract class Player {
-    protected char icon = 'P';
+    protected Icon icon = new Icon();
+
     protected int x = -1, y = -1;
 
     public int getX() {
@@ -15,11 +17,11 @@ public abstract class Player {
     }
 
 
-    public void setIcon(char icon) {
+    public void setIcon(Icon icon) {
         this.icon = icon;
     }
 
-    public char getIcon() {
+    public Icon getIcon() {
         return icon;
     }
 

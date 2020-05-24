@@ -1,7 +1,6 @@
 package game.play.figures;
 
 import game.play.GameBoard.GameMap;
-
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -22,7 +21,7 @@ public class PlayerHuman  extends Player {
         do{
             correctCords = true;
             getCords(dataStyle);
-            if (!map.checkCords(x,y)) {
+            if (!map.isInside(x,y)) {
                 System.out.println("Your cords should be beetween 0-" + (map.getMapSize()-1));
                 correctCords = false;
                 continue;
@@ -55,6 +54,7 @@ public class PlayerHuman  extends Player {
                 good = true;
             } catch (InputMismatchException e) {
                 System.out.println("Wrong input");
+                input.nextLine();
             }
         }
     }
@@ -65,16 +65,17 @@ public class PlayerHuman  extends Player {
         while(!good) {
             try {
                 int number = input.nextInt();
-                x = (number-1) % 3;
-                y = 2 - ((number-1)/3);
+                x = (number - 1) % 3;
+                y = 2 - ((number - 1) / 3);
                 System.out.println("x: " + x + "y: " + y);
                 good = true;
             } catch (InputMismatchException e) {
                 System.out.println("Wrong input");
+                input.nextLine();
+
             }
+
         }
-
-
     }
 
 }

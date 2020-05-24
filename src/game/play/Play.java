@@ -1,9 +1,14 @@
 package game.play;
 
-import game.play.figures.*;
-import game.play.GameBoard.*;
+import game.play.GameBoard.GameMap;
+import game.play.Icon.Icon;
+import game.play.figures.BotLevel;
+import game.play.figures.Player;
+import game.play.figures.PlayerBot;
+import game.play.figures.PlayerHuman;
 import game.play.gameSettings.GameSettings;
 import game.settings.Menu;
+
 import java.util.Scanner;
 
 
@@ -16,7 +21,7 @@ public class Play {
     private Player player2;
     private GameSettings lastGameSettings = new GameSettings(input);
 
-    private char tmpIcon;
+    private Icon tmpIcon = new Icon('X');
 
 
 
@@ -28,25 +33,21 @@ public class Play {
            setBoard(gameSettings.getBoardSize());
            setGameMode(gameSettings.getNumberGameMode(),gameSettings.getBotLvl());
            setIcons(gameSettings.getPlayer1Icon());
-           setStartingIcon(gameSettings.getNumberStartingIcon());
+           setStartingIcon(gameSettings.getStartingIcon());
 
            lastGameSettings = gameSettings; // remember last game
        }
        else if(menu.getPlayState() == 1){
            map.clean();
-           setStartingIcon(lastGameSettings.getNumberStartingIcon());
+           setStartingIcon(lastGameSettings.getStartingIcon());
        }
     }
 
-    private void setStartingIcon(int startingIcon){
-        if(startingIcon==1){
-            tmpIcon = 'X';
-        }
-        else if(startingIcon==2){
-            tmpIcon = 'o';
-        }
+    private void setStartingIcon(Icon startingIcon){
+       tmpIcon.setCharacter(startingIcon.getCharacter());
     }
-    private void setGameMode(int game_mode, int botLvl){
+
+    private void setGameMode(int game_mode, BotLevel botLevel){
         player1 = new PlayerHuman(menu.get_settings().getStandartDataStyle(), map.getMapSize(),input);
         if(game_mode==1) {
             player2 = new PlayerHuman(menu.get_settings().getStandartDataStyle(), map.getMapSize(),input);
@@ -54,19 +55,19 @@ public class Play {
         }
         else if(game_mode==2) {
 
-            player2 = new PlayerBot(botLvl);
+            player2 = new PlayerBot(botLevel);
             System.out.println("PvsB");
         }
     }
     public void setIcons(int player1Icon) {
 
         if(player1Icon == 1){
-            player1.setIcon('X');
-            player2.setIcon('o');
+            player1.setIcon(new Icon('X'));
+            player2.setIcon(new Icon('o'));
         }
         else if(player1Icon == 2) {
-            player1.setIcon('o');
-            player2.setIcon('X');
+            player1.setIcon(new Icon('o'));
+            player2.setIcon(new Icon('X'));
         }
     }
     public void setBoard(int boardSize) {
@@ -77,8 +78,7 @@ public class Play {
         map.clean();
     }
     public void changePlayer(){
-        if(tmpIcon == 'X') tmpIcon = 'o';
-        else if(tmpIcon == 'o') tmpIcon = 'X';
+        tmpIcon.reverseCharacter();
     }
     public void annouceGameEnding(int gameCondition){
         if(gameCondition == 0) System.out.println("It's TIE !");
@@ -91,7 +91,7 @@ public class Play {
     }
     public void makeMove(Player player){
         player.doMove(map);
-        map.setCellIcon(player.getX(),player.getY(),player.getIcon());
+        map.setCellIcon(player.getX(),player.getY(),player.getIcon().getCharacter());
     }
 
     public void doGame(){
@@ -102,10 +102,10 @@ public class Play {
 
             map.printMap();
             while (map.checkGameCondtion() == 2) {
-                System.out.println("Teraz kolej: " + tmpIcon);
-                if (tmpIcon == player1.getIcon()) {
-                   makeMove(player1);
-                } else if (tmpIcon == player2.getIcon()) {
+                System.out.println("It's a '" + tmpIcon.getCharacter() + "' turn" );
+                if (tmpIcon.getCharacter() == player1.getIcon().getCharacter()) {
+                    makeMove(player1);
+                } else if (tmpIcon.getCharacter() == player2.getIcon().getCharacter()){
                     makeMove(player2);
                 }
                 map.printMap();

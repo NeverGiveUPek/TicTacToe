@@ -8,19 +8,19 @@ import java.util.Random;
 public class PlayerBot extends Player {
     private int[] move = new int[2];// {x , y}
     private byte bestScore = -10;
-    private int botLvl;
+    private BotLevel botLvl;
 
 
-    public PlayerBot(int botLvl){
+    public PlayerBot(BotLevel botLvl){
         this.botLvl = botLvl;
     }
 
     @Override
     public void doMove(GameMap map) {
-        if(botLvl == 1){ // unbeatable bot
+        if(botLvl.equals(BotLevel.GOD)){ // unbeatable bot
             getBestMove(map);
         }
-        else if(botLvl == 2){ // average bot
+        else if(botLvl.equals(BotLevel.AVERAGE)){ // average bot
             getAverageMove(map);
         }
         else { //worst bot
@@ -36,7 +36,7 @@ public class PlayerBot extends Player {
         for (int i = 0; i < mapSize; i++) {
             for (int j = 0; j < mapSize; j++) {
                 if (map.checkCellEmpty(j, i)) {
-                    map.setCellIcon(j, i, icon);
+                    map.setCellIcon(j, i, icon.getCharacter());
                     score = minimax(map, (byte) 0, false, false);
                     map.setCellIcon(j, i, ' ');
                     if (score > bestScore) {
@@ -90,7 +90,7 @@ public class PlayerBot extends Player {
         for (int i = 0; i < mapSize; i++) {
             for (int j = 0; j < mapSize; j++) {
                 if (map.checkCellEmpty(j, i)) {
-                    map.setCellIcon(j, i, icon);
+                    map.setCellIcon(j, i, icon.getCharacter());
                     score = minimax(map, (byte) 0, false, true);
                     map.setCellIcon(j, i, ' ');
                     if (score >= 5) {
@@ -132,8 +132,8 @@ public class PlayerBot extends Player {
         for (int i = 0; i < mapSize; i++) {
             for (int j = 0; j < mapSize; j++) {
                 if (map.checkCellEmpty(j, i)) {
-                    if (!isMaximazing) map.setCellIcon(j, i, another_icon());
-                    else map.setCellIcon(j, i, icon);
+                    if (!isMaximazing) map.setCellIcon(j, i,icon.anotherIcon());
+                    else map.setCellIcon(j, i, icon.getCharacter());
                     byte score = minimax(map, (byte) (depth + 1), !isMaximazing, isAverage);
                     map.setCellIcon(j, i, ' ');
                     if (!isMaximazing) {
@@ -162,12 +162,7 @@ public class PlayerBot extends Player {
     }
 
     private byte adaptGameCondition(byte score) {
-        if (icon == 'o') score = (byte) (-1 * score);
+        if (icon.getCharacter() == 'o') score = (byte) (-1 * score);
         return score;
-    }
-
-    private char another_icon() {
-        if (icon == 'X') return 'o';
-        else return 'X';
     }
 }

@@ -1,5 +1,4 @@
 package game.play.GameBoard;
-
 public class GameMap {
     private int size;
     private int winningLength;
@@ -58,12 +57,12 @@ public class GameMap {
         else if(board[y][x]=='o')return false;
         return true;
     }
-    public boolean checkCords(int x, int y){
+    public boolean isInside(int x, int y){
         return x >= 0 && x < size && y >= 0 && y < size;
     }
     public int getMapSize(){return size;}
-    public void setCellIcon(int x, int y, char icon) {
-        board[y][x] = icon;
+    public void setCellIcon(int x, int y, char givenIcon) {
+        board[y][x] = givenIcon;
     }
     public boolean checkMapFull(){
         for(int i=0;i<size;i++){
@@ -73,51 +72,51 @@ public class GameMap {
         }
         return true;
     }
-    public boolean checkHorizontal(int x, int y, char givenIcon){
+    public boolean checkHorizontal(int x, int y, char givenIconCharacter){
         for(int i = 0; i< winningLength; i++)
         {
-            if(board[y][x+i]!=givenIcon) return false;
+            if(board[y][x+i]!=givenIconCharacter) return false;
         }
         return true;
     }
-    public boolean checkVertical(int x, int y, char givenIcon){
+    public boolean checkVertical(int x, int y, char givenIconCharacter){
         for(int i = 0; i< winningLength; i++)
         {
-            if(board[y+i][x]!=givenIcon) return false;
+            if(board[y+i][x]!=givenIconCharacter) return false;
         }
         return true;
     }
-    public boolean checkDiagonallyRight(int x, int y, char givenIcon){
+    public boolean checkDiagonallyRight(int x, int y, char givenIconCharacter){
         for(int i = 0; i< winningLength; i++)
         {
-            if(board[y+i][x+i]!=givenIcon) return false;
+            if(board[y+i][x+i]!=givenIconCharacter) return false;
         }
         return true;
     }
-    public boolean checkDiagonallyLeft(int x, int y, char givenIcon){
+    public boolean checkDiagonallyLeft(int x, int y, char givenIconCharacter){
         for(int i = 0; i< winningLength; i++)
         {
-            if(board[y+i][x-i]!=givenIcon) return false;
+            if(board[y+i][x-i]!=givenIconCharacter) return false;
         }
         return true;
     }
 
-    public boolean checkWin(char icon){
+    public boolean checkWin(char givenIconCharacter){
         boolean flag = false;
 
         for(int i=0;i<size;i++) {
             for(int j=0;j<size;j++){
                 if(j<=size- winningLength) {
-                    if(checkHorizontal(j,i,icon)) flag = true;
+                    if(checkHorizontal(j,i,givenIconCharacter)) flag = true;
                 }
                 if(i<=size- winningLength) {
-                    if(checkVertical(j,i,icon)) flag = true;
+                    if(checkVertical(j,i,givenIconCharacter)) flag = true;
                 }
                 if(j<=size- winningLength && i<=size- winningLength) {
-                    if(checkDiagonallyRight(j,i,icon)) flag = true;
+                    if(checkDiagonallyRight(j,i,givenIconCharacter)) flag = true;
                 }
                 if(j>= winningLength -1 && i<=size- winningLength) {
-                    if(checkDiagonallyLeft(j,i,icon)) flag = true;
+                    if(checkDiagonallyLeft(j,i,givenIconCharacter)) flag = true;
                 }
             }
         }
